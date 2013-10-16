@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>SimpleErrorMVC</id>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <authors>Christopher Dresel</authors>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>An MVC package that simplifies error handling.</description>
