@@ -1,0 +1,104 @@
+﻿<h2>Error trigger links</h2>
+<script type="text/javascript">
+	$(function () {
+		$('a.ajax-error-link').bind('click', function (event) {
+			var $this = $(this);
+			var url = $this.attr('href');
+
+			$.getJSON(url, function (data) {
+				alert('Failed to get an error response.');
+			})
+				.error(function (xhr, textStatus, errorThrown) {
+					alert('Error thrown: ' + errorThrown);
+					alert('Response text: ' + xhr.responseText);
+				});
+
+			event.preventDefault();
+		});
+	});
+
+	// Intercept POST error link clicks.
+	$(function () {
+		$('a.post-link').bind('click', function (event) {
+			var $this = $(this);
+			var url = $this.attr('href');
+			var $form = $('#post-link-form');
+			$form.attr('action', url);
+			$form.submit();
+			event.preventDefault();
+		});
+	});
+</script>
+<div style="overflow: hidden;">
+	<fieldset>
+		<legend>500 ERRORS</legend>
+		<dl>
+			<dt><a href="@Url.Content("~/Home/UnhandledException")">Action method exception on GET request</a></dt>
+			<dd>A GET request to an action method that throws an unhandled exception.</dd>
+			<dt><a href="@Url.Content("~/Home/ChildAction")">Child Action method exception on GET request</a></dt>
+			<dd>A GET request to an action method that throws an unhandled exception.</dd>
+			<dt><a href="@Url.Content("~/Home/UnhandledExceptionPost")" class="post-link">Action method exception on POST request</a></dt>
+			<dd>A POST request to an action method that throws an unhandled exception.</dd>
+			<dt><a href="@Url.Content("~/Home/UnhandledExceptionAjax")" class="ajax-error-link">Action method exception on AJAX request</a></dt>
+			<dd>An AJAX request to an action method that throws an unhandled exception.</dd>
+			<dt><a href="@Url.Content("~/Home/FailedFileDownload")">Failed file download</a></dt>
+			<dd>A request for a file where the FileStreamResult throws an unhandled exception.</dd>
+			<dt><a href="@Url.Content("~/Home/BeginRequestException")">BeginRequest exception</a></dt>
+			<dd>A request that fails because the BeginRequest event throws an unhandled exception.</dd>
+		</dl>
+	</fieldset>
+	<fieldset>
+		<legend>401 ERRORS</legend>
+		<dl>
+			<dt><a href="@Url.Content("~/Home/UnauthorizedException")">Action method exception on GET request</a></dt>
+			<dd>A GET request to an action method that throws an unauthorized exception.</dd>
+		</dl>
+	</fieldset>
+	<fieldset>
+		<legend>404 ERRORS</legend>
+		<dl>
+			<dt><a href="@Url.Content("~/Home/NotFoundException")">Action method 404 exception</a></dt>
+			<dd>An action method that throws a HttpException with a status code of 404.</dd>
+			<dt><a href="@Url.Content("~/Home/NotFoundExceptionAjax")" class="ajax-error-link">JSON action method 404 exception</a></dt>
+			<dd>An AJAX action method that throws a HttpException with a status code of 404.</dd>
+			<dt><a href="@Url.Content("~/Home/UnknownAction")">GET for unknown action</a></dt>
+			<dd>A GET request where the controller is known but the action method is not.</dd>
+			<dt><a href="@Url.Content("~/Home/UnknownActionPost")" class="post-link">POST for unknown action</a></dt>
+			<dd>A POST request where the controller is known but the action method is not.</dd>
+			<dt><a href="@Url.Content("~/UnknownController/Whatever")">Unknown controller</a></dt>
+			<dd>The controller is unknown.</dd>
+			<dt><a href="@Url.Content("~/Home/UnhandledException/Whatever/Whatever")">Does not match any route</a></dt>
+			<dd>The path does not match any registered route.</dd>
+			<dt><a href="@Url.Content("~/Home/UnhandledExceptionParameter?value=<s")">Request validation error</a></dt>
+			<dd>A request that fails because the query string contains a potentially dangerous value.</dd>
+			<dt><a href="@Url.Content("~/Home/UnhandledExceptionParameter?value=asdf")">Argument exception error</a></dt>
+			<dd>A request that fails because the input can't be parsed.</dd>
+			<dt><a href="@Url.Content("~/con")">Zombie DOS</a></dt>
+			<dd>A zombie DOS path. (The other such paths are com1 to com9, lpt1 to lpt9, aux, prt and nul.)</dd>
+			<dt><a href="@Url.Content("~/app_code")">app_code directory</a></dt>
+			<dd>An ASP.NET directory that does not exist on this site</dd>
+			<dt><a href="@Url.Content("~/bin")">bin directory</a></dt>
+			<dd>An ASP.NET directory that exists but that should not be served.</dd>
+			<dt><a href="@Url.Content("~/Web.config")">Web.config</a></dt>
+			<dd>An ASP.NET file that exists but that should not be served.</dd>
+			<dt><a href="@Url.Content("~/global.asax")">global.asax</a></dt>
+			<dd>An ASP.NET file that exists but that should not be served.</dd>
+			<dt><a href="@Url.Content("~/controllers")">Controllers directory</a></dt>
+			<dd>An MVC directory that exists but that should not be served.</dd>
+			<dt><a href="@Url.Content("~/Controllers/ErrorController.cs")">Controller class file</a></dt>
+			<dd>A C# file that exists but that should not be served.</dd>
+			<dt><a href="@Url.Content("~/views")">Views directory</a></dt>
+			<dd>An MVC directory that exists but that should not be served.</dd>
+			<dt><a href="@Url.Content("~/views/home/index.cshtml")">Razor view file</a></dt>
+			<dd>A Razor view file that exists but that should not be served.</dd>
+			<dt><a href="@Url.Content("~/views/shared/_layout.cshtml")">Razor layout file</a></dt>
+			<dd>A Razor file that starts with an underscore, creating a pseudo-404 error.</dd>
+			<dt><a href="@Url.Content("~/content")">Content directory</a></dt>
+			<dd>A directory that should not be browsable.</dd>
+			<dt><a href="@Url.Content("~/unknown.jpg")">Unknown image</a></dt>
+			<dd>An image that does not exist.</dd>
+		</dl>
+	</fieldset>
+</div>
+<form action="gets_replaced" method="post" id="post-link-form" style="display: none"></form>
+

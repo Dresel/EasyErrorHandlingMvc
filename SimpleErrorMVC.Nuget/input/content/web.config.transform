@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<configuration>
+	<system.web>
+		<!-- Set to 'On' to always show custom errors -->
+		<customErrors mode="RemoteOnly" />
+		
+		<!-- Allow zombie DOS names to be captured by ASP.NET (/con, /com1, /lpt1, /aux, /prt, /nul, etc) -->
+		<httpRuntime relaxedUrlToFileSystemMapping="true" />
+	</system.web>
+
+	<system.webServer>
+		<!-- Catch IIS 401, 403, 404 and 500 errors and redirect to ErrorController -->
+		<httpErrors errorMode="Custom" defaultResponseMode="ExecuteURL">
+			<clear />
+			<error statusCode="401" responseMode="ExecuteURL" path="/Unauthorized" />
+			<error statusCode="403" responseMode="ExecuteURL" path="/NotFound" />
+			<error statusCode="404" responseMode="ExecuteURL" path="/NotFound" />
+			<error statusCode="500" responseMode="ExecuteURL" path="/InternalServerError" />
+		</httpErrors>
+	</system.webServer>
+</configuration>
