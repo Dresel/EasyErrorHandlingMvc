@@ -1,4 +1,4 @@
-﻿namespace SimpleErrorMVC
+﻿namespace SimpleErrorMVC.Models
 {
 	public class NotFoundViewModel
 	{

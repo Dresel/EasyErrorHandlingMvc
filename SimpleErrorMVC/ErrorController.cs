@@ -7,6 +7,7 @@
 	using System.Web.Mvc;
 	using System.Web.Routing;
 	using SimpleErrorMVC.Logger;
+	using SimpleErrorMVC.Models;
 	using SimpleErrorMVC.Setup;
 
 	public class ErrorController : IController
@@ -224,6 +225,7 @@
 			requestContext.HttpContext.Response.Clear();
 			requestContext.HttpContext.Response.TrySkipIisCustomErrors = true;
 			requestContext.HttpContext.Response.StatusCode = httpStatusCode;
+			requestContext.HttpContext.Response.ContentType = "text/HTML";
 		}
 
 		protected void Render(RequestContext requestContext, ActionResult actionResult)
