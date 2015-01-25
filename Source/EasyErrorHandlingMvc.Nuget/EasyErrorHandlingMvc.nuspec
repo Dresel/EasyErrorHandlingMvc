@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>EasyErrorHandlingMvc</id>
+        <version>1.0.0</version>
+        <authors>Christopher Dresel</authors>
+        <projectUrl>https://github.com/Dresel/EasyErrorHandlingMvc</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>An MVC package that simplifies error handling.</description>
+        <language />
+    </metadata>
+    <files>
+        <file src="input\content\App_Start\ErrorHandlingConfig.cs.pp" target="content\App_Start\ErrorHandlingConfig.cs.pp" />
+        <file src="input\content\Views\ErrorHandling\FatalError.htm" target="content\Views\ErrorHandling\FatalError.htm" />
+        <file src="input\content\Views\ErrorHandling\InternalServerError.cshtml" target="content\Views\ErrorHandling\InternalServerError.cshtml" />
+        <file src="input\content\Views\ErrorHandling\NotFound.cshtml" target="content\Views\ErrorHandling\NotFound.cshtml" />
+        <file src="input\content\Views\ErrorHandling\Unauthorized.cshtml" target="content\Views\ErrorHandling\Unauthorized.cshtml" />
+        <file src="input\content\web.config.transform" target="content\web.config.transform" />
+        <file src="input\lib\net40\EasyErrorHandlingMvc.dll" target="lib\net40\EasyErrorHandlingMvc.dll" />
+        <file src="readme.txt" target="readme.txt" />
+    </files>
+</package>
