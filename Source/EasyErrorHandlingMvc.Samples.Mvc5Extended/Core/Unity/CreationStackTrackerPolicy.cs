@@ -1,4 +1,6 @@
-﻿namespace EasyErrorHandlingMvc.Samples.Mvc5Extended.Core.Unity
+﻿// See https://github.com/roblevine/UnityLog4NetExtension
+
+namespace EasyErrorHandlingMvc.Samples.Mvc5Extended.Core.Unity
 {
 	using System;
 	using System.Collections.Generic;
