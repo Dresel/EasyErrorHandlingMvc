@@ -10,7 +10,7 @@
 	</system.web>
 
 	<system.webServer>
-		<!-- Catch IIS 401, 403, 404 and 500 errors and redirect to ErrorController -->
+		<!-- Catch IIS (e.g. RequestFiltering) 401, 403, 404 and 500 errors and redirect to ErrorController -->
 		<httpErrors errorMode="Custom" defaultResponseMode="ExecuteURL">
 			<clear />
 			<error statusCode="401" responseMode="ExecuteURL" path="/Unauthorized" />
