@@ -65,7 +65,7 @@
 			throw new Exception("This exception was deliberately thrown by a POST action method.");
 		}
 
-		[HttpGet]
+		[AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
 		public virtual ActionResult UnhandledExceptionWithValidationError(int inputText)
 		{
 			return null;

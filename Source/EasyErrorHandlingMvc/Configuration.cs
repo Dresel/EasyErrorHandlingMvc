@@ -10,7 +10,7 @@
 	{
 		static Configuration()
 		{
-			CorrespondingRenderingHttpStatusCode = new List<Func<Exception, HttpStatusCode?>>();
+			CorrespondingRenderingHttpStatusCode = new List<Func<HttpContext, Exception, HttpStatusCode?>>();
 			ErrorViewPaths = new Dictionary<HttpStatusCode, string>();
 			FatalErrorFilePath = string.Empty;
 
@@ -32,11 +32,14 @@
 			ErrorHandlingControllerName = "ErrorHandling";
 		}
 
+		public static ICollection<Func<HttpContext, Exception, HttpStatusCode?>> CorrespondingRenderingHttpStatusCode { get;
+			set; }
+
+		public static string EasyErrorHandlingLoggedHttpContextItemName { get; set; }
+
 		public static string ErrorControllerRenderCalledHttpContextItemName { get; set; }
 
 		public static string ErrorHandlingControllerName { get; set; }
-
-		public static ICollection<Func<Exception, HttpStatusCode?>> CorrespondingRenderingHttpStatusCode { get; set; }
 
 		public static IDictionary<HttpStatusCode, string> ErrorViewPaths { get; set; }
 
@@ -44,13 +47,16 @@
 
 		public static string FatalErrorFilePath { get; set; }
 
-		public static string EasyErrorHandlingLoggedHttpContextItemName { get; set; }
-
-		public static void RenderDangerousParametersAs(HttpStatusCode renderedHttpStatusCode)
+		public static void RenderEverythingElseAs(HttpStatusCode renderedHttpStatusCode)
 		{
-			CorrespondingRenderingHttpStatusCode.Add(exception =>
+			CorrespondingRenderingHttpStatusCode.Add((httpContext, exception) => renderedHttpStatusCode);
+		}
+
+		public static void RenderGetDangerousParametersAs(HttpStatusCode renderedHttpStatusCode)
+		{
+			CorrespondingRenderingHttpStatusCode.Add((httpContext, exception) =>
 			{
-				if (exception is HttpRequestValidationException)
+				if (exception is HttpRequestValidationException && httpContext.Request.HttpMethod == "GET")
 				{
 					return renderedHttpStatusCode;
 				}
@@ -59,31 +65,27 @@
 			});
 		}
 
-		public static void RenderEverythingElseAs(HttpStatusCode renderedHttpStatusCode)
+		public static void RenderGetInvalidParametersAs(HttpStatusCode renderedHttpStatusCode)
 		{
-			CorrespondingRenderingHttpStatusCode.Add(exception => renderedHttpStatusCode);
+			CorrespondingRenderingHttpStatusCode.Add((httpContext, exception) =>
+			{
+				if ((exception is ArgumentException) && (exception.TargetSite.DeclaringType == typeof(ActionDescriptor)) &&
+					httpContext.Request.HttpMethod == "GET")
+				{
+					return renderedHttpStatusCode;
+				}
+
+				return null;
+			});
 		}
 
 		public static void RenderHttpExceptionAs(HttpStatusCode exceptionHttpStatusCode, HttpStatusCode renderedHttpStatusCode)
 		{
-			CorrespondingRenderingHttpStatusCode.Add(exception =>
+			CorrespondingRenderingHttpStatusCode.Add((httpContext, exception) =>
 			{
 				HttpException httpException = exception as HttpException;
 
 				if ((httpException != null) && (httpException.GetHttpCode() == (int)exceptionHttpStatusCode))
-				{
-					return renderedHttpStatusCode;
-				}
-
-				return null;
-			});
-		}
-
-		public static void RenderInvalidParametersAs(HttpStatusCode renderedHttpStatusCode)
-		{
-			CorrespondingRenderingHttpStatusCode.Add(exception =>
-			{
-				if ((exception is ArgumentException) && (exception.TargetSite.DeclaringType == typeof(ActionDescriptor)))
 				{
 					return renderedHttpStatusCode;
 				}

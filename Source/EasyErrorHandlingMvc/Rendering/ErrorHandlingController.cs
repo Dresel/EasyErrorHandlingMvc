@@ -33,7 +33,7 @@
 		{
 			// Get the HttpStatusCode the Response should be rendered as, fallback to InternalServerError if no mapping exist
 			HttpStatusCode? httpStatusCode =
-				Configuration.CorrespondingRenderingHttpStatusCode.Select(x => x(exception)).FirstOrDefault(x => x != null) ??
+				Configuration.CorrespondingRenderingHttpStatusCode.Select(x => x(httpContext, exception)).FirstOrDefault(x => x != null) ??
 					HttpStatusCode.InternalServerError;
 
 			Execute(exception, httpStatusCode.Value, httpContext);
@@ -43,7 +43,7 @@
 		{
 			// Get the HttpStatusCode the Response should be rendered as, fallback to InternalServerError if no mapping exist
 			HttpStatusCode? httpStatusCode =
-				Configuration.CorrespondingRenderingHttpStatusCode.Select(x => x(exception)).FirstOrDefault(x => x != null) ??
+				Configuration.CorrespondingRenderingHttpStatusCode.Select(x => x(requestContext.HttpContext.ApplicationInstance.Context, exception)).FirstOrDefault(x => x != null) ??
 					HttpStatusCode.InternalServerError;
 
 			Render(exception, requestContext, httpStatusCode.Value);

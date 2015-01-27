@@ -52,13 +52,21 @@
 		</dt>
 		<dd>A request for a file where the FileStreamResult throws an unhandled exception.</dd>
 		<dt>
-			<a href="@Url.Content("~/ErrorGeneration/UnhandledExceptionWithValidationError?inputText=<s")">Request validation error</a>
+			<a href="@Url.Content("~/ErrorGeneration/UnhandledExceptionWithValidationError?inputText=<script>")">Get Request validation error</a>
 		</dt>
-		<dd>A request that fails because the query string contains a potentially dangerous value.</dd>
+		<dd>A get request that fails because the query string contains a potentially dangerous value.</dd>
 		<dt>
-			<a href="@Url.Content("~/ErrorGeneration/UnhandledExceptionWithValidationError?inputText=asdf")">Request validation error</a>
+			<a href="@Url.Content("~/ErrorGeneration/UnhandledExceptionWithValidationError?inputText=<script>")" class="post-link">Post Request validation error</a>
 		</dt>
-		<dd>A request that fails because the query string contains invalid values.</dd>
+		<dd>A post request that fails because the query string contains a potentially dangerous value.</dd>
+		<dt>
+			<a href="@Url.Content("~/ErrorGeneration/UnhandledExceptionWithValidationError?inputText=asdf")">Get Request validation error</a>
+		</dt>
+		<dd>A get request that fails because the query string contains invalid values.</dd>
+		<dt>
+			<a href="@Url.Content("~/ErrorGeneration/UnhandledExceptionWithValidationError?inputText=asdf")" class="post-link">Post Request validation error</a>
+		</dt>
+		<dd>A post request that fails because the query string contains invalid values.</dd>
 		<dt>
 			<a href="@Url.Content("~/ErrorGeneration/NotFoundException")">Action method 404 exception</a>
 		</dt>

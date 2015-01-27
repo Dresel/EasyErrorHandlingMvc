@@ -45,8 +45,8 @@
 		{
 			// Define which HttpStatusCode should be rendered for which type of error, from most to less specific
 			// For defining individual rules, add them to CorrespondingRenderingHttpStatusCode directly
-			Configuration.RenderDangerousParametersAs(HttpStatusCode.NotFound);
-			Configuration.RenderInvalidParametersAs(HttpStatusCode.NotFound);
+			Configuration.RenderGetDangerousParametersAs(HttpStatusCode.NotFound);
+			Configuration.RenderGetInvalidParametersAs(HttpStatusCode.NotFound);
 			Configuration.RenderHttpExceptionAs(HttpStatusCode.Forbidden, HttpStatusCode.NotFound);
 			Configuration.RenderHttpExceptionAs(HttpStatusCode.NotFound, HttpStatusCode.NotFound);
 
