@@ -24,16 +24,14 @@
 
 		public void OnException(ExceptionContext filterContext)
 		{
-			if (!filterContext.HttpContext.Items.Contains(Configuration.LoggedHttpContextItemName))
+			if (!filterContext.HttpContext.Items.Contains(Configuration.EasyErrorHandlingLoggedHttpContextItemName))
 			{
-				filterContext.HttpContext.Items[Configuration.LoggedHttpContextItemName] = true;
+				filterContext.HttpContext.Items[Configuration.EasyErrorHandlingLoggedHttpContextItemName] = true;
 				LogException(filterContext);
 			}
 
-			// If CustomErrors are disabled or exception is handled or action is child action / thrown while rendering by ErrorHandlingController,
-			// return to prevent recursive ErrorHandlingController calls
-			if (!filterContext.HttpContext.IsCustomErrorEnabled || filterContext.ExceptionHandled || filterContext.IsChildAction ||
-				filterContext.RouteData.RouteDataIsErrorHandlingController())
+			// If CustomErrors are disabled or exception is handled or action is child action return
+			if (!filterContext.HttpContext.IsCustomErrorEnabled || filterContext.ExceptionHandled || filterContext.IsChildAction)
 			{
 				return;
 			}

@@ -7,6 +7,7 @@
 	using System.Web;
 	using System.Web.Mvc;
 	using System.Web.Routing;
+	using EasyErrorHandlingMvc.Handlers;
 
 	public class ErrorHandlingController : ControllerBase
 	{
@@ -164,6 +165,14 @@
 		{
 			try
 			{
+				if (requestContext.HttpContext.Items.Contains(Configuration.ErrorControllerRenderCalledHttpContextItemName))
+				{
+					throw new InvalidOperationException(
+						"[ErrorHandlingController]: Recursive ErrorHandlingController Render calls detected.");
+				}
+
+				requestContext.HttpContext.Items[Configuration.ErrorControllerRenderCalledHttpContextItemName] = true;
+
 				ActionResult actionResult;
 
 				string errorViewPath = Configuration.ErrorViewPaths[renderedHttpStatusCode];
@@ -215,6 +224,12 @@
 				catch
 				{
 					Trace.WriteLine(message);
+				}
+
+				// If action is child action rethrow
+				if (requestContext.RouteData.IsChildAction())
+				{
+					throw;
 				}
 
 				InitResponse(requestContext, HttpStatusCode.InternalServerError);

@@ -39,16 +39,14 @@
 		protected bool HandleActionInvokingException(ControllerContext controllerContext, string actionName,
 			Exception exception)
 		{
-			if (!controllerContext.HttpContext.Items.Contains(Configuration.LoggedHttpContextItemName))
+			if (!controllerContext.HttpContext.Items.Contains(Configuration.EasyErrorHandlingLoggedHttpContextItemName))
 			{
-				controllerContext.HttpContext.Items[Configuration.LoggedHttpContextItemName] = true;
+				controllerContext.HttpContext.Items[Configuration.EasyErrorHandlingLoggedHttpContextItemName] = true;
 				LogActionInvokingException(controllerContext, actionName, exception);
 			}
 
-			// If CustomErrors are disabled or action is child action / thrown while rendering by ErrorHandlingController,
-			// rethrow to prevent recursive ErrorHandlingController calls
-			if (!controllerContext.HttpContext.IsCustomErrorEnabled || controllerContext.RouteData.IsChildAction() ||
-				controllerContext.RouteData.RouteDataIsErrorHandlingController())
+			// If CustomErrors are disabled or action is child action rethrow
+			if (!controllerContext.HttpContext.IsCustomErrorEnabled || controllerContext.RouteData.IsChildAction())
 			{
 				throw exception;
 			}
@@ -67,10 +65,8 @@
 
 			LogActionNotFoundException(controllerContext, actionName, httpException);
 
-			// If CustomErrors are disabled or action is child action / thrown while rendering by ErrorHandlingController,
-			// return to prevent recursive ErrorHandlingController calls
-			if (!controllerContext.HttpContext.IsCustomErrorEnabled || controllerContext.RouteData.IsChildAction() ||
-				controllerContext.RouteData.RouteDataIsErrorHandlingController())
+			// If CustomErrors are disabled or action is child action return
+			if (!controllerContext.HttpContext.IsCustomErrorEnabled || controllerContext.RouteData.IsChildAction())
 			{
 				return false;
 			}

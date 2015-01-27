@@ -26,16 +26,15 @@
 	</body>
 </html>";
 
-			LoggedHttpContextItemName = "LoggedByEasyErrorHandling";
+			EasyErrorHandlingLoggedHttpContextItemName = "EasyErrorHandlingLogged";
+			ErrorControllerRenderCalledHttpContextItemName = "ErrorControllerRenderCalled";
+
+			ErrorHandlingControllerName = "ErrorHandling";
 		}
 
-		public static string ErrorHandlingControllerName
-		{
-			get
-			{
-				return "ErrorHandling";
-			}
-		}
+		public static string ErrorControllerRenderCalledHttpContextItemName { get; set; }
+
+		public static string ErrorHandlingControllerName { get; set; }
 
 		public static ICollection<Func<Exception, HttpStatusCode?>> CorrespondingRenderingHttpStatusCode { get; set; }
 
@@ -45,7 +44,7 @@
 
 		public static string FatalErrorFilePath { get; set; }
 
-		public static string LoggedHttpContextItemName { get; set; }
+		public static string EasyErrorHandlingLoggedHttpContextItemName { get; set; }
 
 		public static void RenderDangerousParametersAs(HttpStatusCode renderedHttpStatusCode)
 		{

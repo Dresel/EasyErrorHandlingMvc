@@ -38,16 +38,14 @@
 			}
 			catch (Exception exception)
 			{
-				if (!requestContext.HttpContext.Items.Contains(Configuration.LoggedHttpContextItemName))
+				if (!requestContext.HttpContext.Items.Contains(Configuration.EasyErrorHandlingLoggedHttpContextItemName))
 				{
-					requestContext.HttpContext.Items[Configuration.LoggedHttpContextItemName] = true;
+					requestContext.HttpContext.Items[Configuration.EasyErrorHandlingLoggedHttpContextItemName] = true;
 					LogException(requestContext, controllerName, exception);
 				}
 
-				// If CustomErrors are disabled or action is child action / thrown while rendering by ErrorHandlingController,
-				// rethrow to prevent recursive ErrorHandlingController calls
-				if (!requestContext.HttpContext.IsCustomErrorEnabled || requestContext.RouteData.IsChildAction() ||
-					requestContext.RouteData.RouteDataIsErrorHandlingController())
+				// If CustomErrors are disabled or action is child action rethrow
+				if (!requestContext.HttpContext.IsCustomErrorEnabled || requestContext.RouteData.IsChildAction())
 				{
 					throw;
 				}

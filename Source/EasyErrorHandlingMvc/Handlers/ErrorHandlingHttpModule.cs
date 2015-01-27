@@ -56,9 +56,9 @@
 				return;
 			}
 
-			if (!httpContext.Items.Contains(Configuration.LoggedHttpContextItemName))
+			if (!httpContext.Items.Contains(Configuration.EasyErrorHandlingLoggedHttpContextItemName))
 			{
-				httpContext.Items[Configuration.LoggedHttpContextItemName] = true;
+				httpContext.Items[Configuration.EasyErrorHandlingLoggedHttpContextItemName] = true;
 				LogException(httpContext, exception);
 			}
 
