@@ -9,8 +9,18 @@
 	{
 		public static void ConfigureErrorHandling()
 		{
+			// Wrap the ControllerFactory
+			// This factory wraps created Controllers with custom ActionInvokers
+			// Handles errors when the Controller could not be created (e.g. Controller not found) or when the invoking of the Action (e.g. Action not found) fails
 			WrapControllerFactory();
+
+			// Registers the EasyErrorHandling ExceptionFilter
+			// Handles errors during executing actions
 			RegisterExceptionFilter(GlobalFilters.Filters);
+
+			// All other errors are handled by the ErrorHandlingHttpModule or by the IIS Runtime (e.g. RequestFiltering)
+
+			// Configures which error pages should be rendered for each case
 			SetRenderingConfiguration();
 		}
 
@@ -24,7 +34,7 @@
 		public static void RegisterSpecificErrorHandlingRoutes(this RouteCollection routes)
 		{
 			// TODO: Call this method at the top of RouteConfig
-			// Register specific Error Routes, called by IIS error handling (must match with registered urls in web.config httpErrors section)
+			// Register specific Error Routes, called by IIS Runtime (must match with registered urls in web.config httpErrors section)
 			routes.RegisterErrorHandlingRoute("InternalServerError", "InternalServerError/", HttpStatusCode.InternalServerError);
 			routes.RegisterErrorHandlingRoute("Unauthorized", "Unauthorized/", HttpStatusCode.Unauthorized);
 			routes.RegisterErrorHandlingRoute("NotFound", "NotFound/", HttpStatusCode.NotFound);
@@ -38,7 +48,7 @@
 
 		private static void RegisterExceptionFilter(GlobalFilterCollection filters)
 		{
-			filters.Add(DependencyResolver.Current.GetService<ExceptionFilterAttribute>());
+			filters.Add(new ExceptionFilterAttribute());
 		}
 
 		private static void SetRenderingConfiguration()
