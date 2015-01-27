@@ -48,7 +48,7 @@
 
 		private static void RegisterExceptionFilter(GlobalFilterCollection filters)
 		{
-			filters.Add(new ExceptionFilterAttribute());
+			filters.Add(DependencyResolver.Current.GetService<ExceptionFilterAttribute>());
 		}
 
 		private static void SetRenderingConfiguration()
