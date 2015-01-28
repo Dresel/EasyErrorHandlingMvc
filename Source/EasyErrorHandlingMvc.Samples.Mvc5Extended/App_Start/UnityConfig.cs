@@ -12,7 +12,7 @@ namespace EasyErrorHandlingMvc.Samples.Mvc5Extended
 		public static void RegisterComponents()
 		{
 			UnityContainer container = new UnityContainer();
-			container.AddNewExtension<SimpleErrorHandlingNLogAdapterExtension>();
+			container.AddNewExtension<EasyErrorHandlingNLogAdapterExtension>();
 
 			// Register EasyErrorHandling Interfaces
 			container.RegisterType<ILogger, NLogAdapter>();

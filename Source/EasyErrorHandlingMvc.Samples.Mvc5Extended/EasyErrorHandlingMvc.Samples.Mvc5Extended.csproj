@@ -30,7 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-	<StyleCopEnabled>True</StyleCopEnabled>
+    <StyleCopEnabled>True</StyleCopEnabled>
     <StyleCopTreatErrorsAsWarnings>True</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -119,8 +119,8 @@
     <Compile Include="Core\Unity\CreationStackTrackerStrategy.cs" />
     <Compile Include="Core\Unity\ICreationStackTrackerPolicy.cs" />
     <Compile Include="Core\Unity\PeekableStack.cs" />
-    <Compile Include="Core\Unity\SimpleErrorHandlingNLogAdapterExtension.cs" />
-    <Compile Include="Core\Unity\SimpleErrorHandlingNLogAdapterStrategy.cs" />
+    <Compile Include="Core\Unity\EasyErrorHandlingNLogAdapterExtension.cs" />
+    <Compile Include="Core\Unity\EasyErrorHandlingNLogAdapterStrategy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

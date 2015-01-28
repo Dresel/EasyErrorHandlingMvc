@@ -77,19 +77,26 @@
 				if (controllerWithInvoker.ActionInvoker is IAsyncActionInvoker)
 				{
 					// Should be async by default
-					controllerWithInvoker.ActionInvoker =
-						new AsyncActionInvokerWrapper((IAsyncActionInvoker)controllerWithInvoker.ActionInvoker, Logger);
+					// Create via DependencyResolver so that DI can inject custom ILogger adapters
+					AsyncActionInvokerWrapper asyncActionInvokerWrapper = DependencyResolver.Current.GetService<AsyncActionInvokerWrapper>();
+					asyncActionInvokerWrapper.ActionInvoker = controllerWithInvoker.ActionInvoker;
+
+					controllerWithInvoker.ActionInvoker = asyncActionInvokerWrapper;
 				}
 				else
 				{
-					controllerWithInvoker.ActionInvoker = new ActionInvokerWrapper(controllerWithInvoker.ActionInvoker, Logger);
+					// Create via DependencyResolver so that DI can inject custom ILogger adapters
+					ActionInvokerWrapper actionInvokerWrapper = DependencyResolver.Current.GetService<ActionInvokerWrapper>();
+					actionInvokerWrapper.ActionInvoker = controllerWithInvoker.ActionInvoker;
+
+					controllerWithInvoker.ActionInvoker = actionInvokerWrapper;
 				}
 			}
 		}
 
 		private void LogException(RequestContext requestContext, string controllerName, Exception exception)
 		{
-			string message = string.Format("[ControllerFactoryWrapper]: Controller \"{0}\" not found.", controllerName);
+			string message = string.Format("Controller \"{0}\" not found.", controllerName);
 
 			try
 			{

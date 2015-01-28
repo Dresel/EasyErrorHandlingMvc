@@ -48,8 +48,7 @@
 
 		protected void LogException(ExceptionContext filterContext)
 		{
-			string message = string.Format(
-				"[ExceptionFilterAttribute]: Action \"{0}\" of Controller \"{1}\" threw an exception.",
+			string message = string.Format("Action \"{0}\" of Controller \"{1}\" threw an exception.",
 				filterContext.RouteData.Values["action"], filterContext.RouteData.Values["controller"]);
 
 			try

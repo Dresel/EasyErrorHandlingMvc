@@ -21,7 +21,7 @@
 		{
 			ILogger logger = DependencyResolver.Current.GetService<ILogger>() ?? new NullLogger();
 
-			string message = "[ErrorHandlingHttpModule]: An exception was thrown.";
+			string message = "An exception was thrown.";
 
 			try
 			{

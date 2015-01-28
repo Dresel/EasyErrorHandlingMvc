@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using System.Net;
 	using System.Web;
 	using System.Web.Mvc;
@@ -46,6 +47,13 @@
 		public static string FatalErrorFallbackContent { get; set; }
 
 		public static string FatalErrorFilePath { get; set; }
+
+		public static HttpStatusCode GetRenderedHttpStatusCode(Exception exception, HttpContext httpContext)
+		{
+			// Get the HttpStatusCode the Response should be rendered as, fallback to InternalServerError if no mapping exist
+			return CorrespondingRenderingHttpStatusCode.Select(x => x(httpContext, exception)).FirstOrDefault(x => x != null) ??
+				HttpStatusCode.InternalServerError;
+		}
 
 		public static void RenderEverythingElseAs(HttpStatusCode renderedHttpStatusCode)
 		{

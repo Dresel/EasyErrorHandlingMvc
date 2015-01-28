@@ -19,7 +19,9 @@
 
 		public void Log(string message, Exception exception, HttpContext context)
 		{
-			message = string.Format("{0}<br />AdditionalInformation<br />{1}<br />", message, GetHttpContextInformation(context));
+			// Normally you wouldn't expose this information directly from context, since nlog.extended can do this for you
+			message = string.Format("{0} - Rendered As: {1} - AdditionalInformation - {2}", message,
+				Configuration.GetRenderedHttpStatusCode(exception, context), GetHttpContextInformation(context));
 
 			if (exception == null || IsHttpCode(exception, HttpStatusCode.NotFound))
 			{
@@ -33,9 +35,12 @@
 
 		public void Log(string message, Exception exception, RequestContext context)
 		{
-			message = string.Format("{0}<br />AdditionalInformation<br />{1}<br />{2}", message,
-				GetRouteDataInformation(context.RouteData),
-				GetHttpContextInformation(context.HttpContext.ApplicationInstance.Context));
+			HttpContext httpContext = context.HttpContext.ApplicationInstance.Context;
+
+			// Normally you wouldn't expose this information directly from context, since nlog.extended can do this for you
+			message = string.Format("{0} - Rendered As: {1} - AdditionalInformation - {2} - {3}", message,
+				Configuration.GetRenderedHttpStatusCode(exception, httpContext), GetRouteDataInformation(context.RouteData),
+				GetHttpContextInformation(httpContext));
 
 			if (exception == null || IsHttpCode(exception, HttpStatusCode.NotFound))
 			{

@@ -9,15 +9,19 @@
 
 	public class ActionInvokerWrapper : IActionInvoker
 	{
-		public ActionInvokerWrapper(IActionInvoker actionInvoker, ILogger logger)
+		public ActionInvokerWrapper()
 		{
-			ActionInvoker = actionInvoker;
+			Logger = new NullLogger();
+		}
+
+		public ActionInvokerWrapper(ILogger logger)
+		{
 			Logger = logger;
 		}
 
-		protected IActionInvoker ActionInvoker { get; set; }
+		public IActionInvoker ActionInvoker { get; set; }
 
-		protected ILogger Logger { get; set; }
+		public ILogger Logger { get; set; }
 
 		public bool InvokeAction(ControllerContext controllerContext, string actionName)
 		{

@@ -6,8 +6,12 @@
 
 	public class AsyncActionInvokerWrapper : ActionInvokerWrapper, IAsyncActionInvoker
 	{
-		public AsyncActionInvokerWrapper(IAsyncActionInvoker actionInvoker, ILogger logger)
-			: base(actionInvoker, logger)
+		public AsyncActionInvokerWrapper()
+		{
+		}
+
+		public AsyncActionInvokerWrapper(ILogger logger)
+			: base(logger)
 		{
 		}
 

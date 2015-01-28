@@ -31,22 +31,12 @@
 
 		public void Execute(Exception exception, HttpContext httpContext)
 		{
-			// Get the HttpStatusCode the Response should be rendered as, fallback to InternalServerError if no mapping exist
-			HttpStatusCode? httpStatusCode =
-				Configuration.CorrespondingRenderingHttpStatusCode.Select(x => x(httpContext, exception)).FirstOrDefault(x => x != null) ??
-					HttpStatusCode.InternalServerError;
-
-			Execute(exception, httpStatusCode.Value, httpContext);
+			Execute(exception, Configuration.GetRenderedHttpStatusCode(exception, httpContext), httpContext);
 		}
 
 		public void Execute(Exception exception, RequestContext requestContext)
 		{
-			// Get the HttpStatusCode the Response should be rendered as, fallback to InternalServerError if no mapping exist
-			HttpStatusCode? httpStatusCode =
-				Configuration.CorrespondingRenderingHttpStatusCode.Select(x => x(requestContext.HttpContext.ApplicationInstance.Context, exception)).FirstOrDefault(x => x != null) ??
-					HttpStatusCode.InternalServerError;
-
-			Render(exception, requestContext, httpStatusCode.Value);
+			Render(exception, requestContext, Configuration.GetRenderedHttpStatusCode(exception, requestContext.HttpContext.ApplicationInstance.Context));
 		}
 
 		protected ActionResult CreateActionResult(RequestContext requestContext, string viewPath, object model)
@@ -147,13 +137,13 @@
 
 		protected void LogExecution(string route, HttpStatusCode httpStatusCode)
 		{
-			string message =
-				string.Format("[ErrorHandlingController]: Executed directly via route \"{0}\" with HttpStatusCode \"{1}\".", route,
-					httpStatusCode);
+			string message = string.Format("Executed directly via route \"{0}\" with HttpStatusCode \"{1}\".", route,
+				httpStatusCode);
 
 			try
 			{
-				Logger.Log(message, null, ControllerContext.RequestContext);
+				Logger.Log(message, new HttpException((int)httpStatusCode, httpStatusCode.ToString()),
+					ControllerContext.RequestContext);
 			}
 			catch
 			{
@@ -167,8 +157,7 @@
 			{
 				if (requestContext.HttpContext.Items.Contains(Configuration.ErrorControllerRenderCalledHttpContextItemName))
 				{
-					throw new InvalidOperationException(
-						"[ErrorHandlingController]: Recursive ErrorHandlingController Render calls detected.");
+					throw new InvalidOperationException("Recursive ErrorHandlingController Render calls detected.");
 				}
 
 				requestContext.HttpContext.Items[Configuration.ErrorControllerRenderCalledHttpContextItemName] = true;
@@ -215,7 +204,7 @@
 			}
 			catch (Exception e)
 			{
-				string message = "[ErrorHandlingController]: A fatal error occured while rendering error information.";
+				string message = "A fatal error occured while rendering error information.";
 
 				try
 				{
