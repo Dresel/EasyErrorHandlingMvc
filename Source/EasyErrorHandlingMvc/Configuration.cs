@@ -33,8 +33,7 @@
 			ErrorHandlingControllerName = "ErrorHandling";
 		}
 
-		public static ICollection<Func<HttpContext, Exception, HttpStatusCode?>> CorrespondingRenderingHttpStatusCode { get;
-			set; }
+		public static ICollection<Func<HttpContext, Exception, HttpStatusCode?>> CorrespondingRenderingHttpStatusCode { get; set; }
 
 		public static string EasyErrorHandlingLoggedHttpContextItemName { get; set; }
 

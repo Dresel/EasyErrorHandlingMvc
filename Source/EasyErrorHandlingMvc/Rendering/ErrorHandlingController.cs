@@ -2,7 +2,6 @@
 {
 	using System;
 	using System.Diagnostics;
-	using System.Linq;
 	using System.Net;
 	using System.Web;
 	using System.Web.Mvc;
@@ -36,7 +35,8 @@
 
 		public void Execute(Exception exception, RequestContext requestContext)
 		{
-			Render(exception, requestContext, Configuration.GetRenderedHttpStatusCode(exception, requestContext.HttpContext.ApplicationInstance.Context));
+			Render(exception, requestContext,
+				Configuration.GetRenderedHttpStatusCode(exception, requestContext.HttpContext.ApplicationInstance.Context));
 		}
 
 		protected ActionResult CreateActionResult(RequestContext requestContext, string viewPath, object model)
@@ -88,7 +88,7 @@
 
 				if (Enum.TryParse(action, true, out httpStatusCode))
 				{
-					LogExecution(((Route)ControllerContext.RequestContext.RouteData.Route).Url, httpStatusCode);
+					LogExecution(httpStatusCode);
 					Render(null, ControllerContext.RequestContext, httpStatusCode);
 
 					return;
@@ -135,10 +135,9 @@
 			requestContext.HttpContext.Response.ContentType = contentType;
 		}
 
-		protected void LogExecution(string route, HttpStatusCode httpStatusCode)
+		protected void LogExecution(HttpStatusCode httpStatusCode)
 		{
-			string message = string.Format("Executed directly via route \"{0}\" with HttpStatusCode \"{1}\".", route,
-				httpStatusCode);
+			string message = string.Format("Executed directly with HttpStatusCode \"{0}\".", httpStatusCode);
 
 			try
 			{
